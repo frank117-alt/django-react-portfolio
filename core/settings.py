@@ -12,13 +12,11 @@ django.utils.encoding.force_text = force_str
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#'django-insecure-106o^xepqg@lb9-woje))un-bqk%@*=_rvi8o^m+@s3yfa7g_w'
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
+DOMAIN=os.environ.get('DOMAIN')
 DEBUG = 'RENDER' not in os.environ
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:  
      ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
@@ -99,8 +97,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
 
 
 
@@ -230,9 +226,10 @@ if not DEBUG:
     #CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 
     DATABASES = {
-        "default": dj_database_url.config(
-            default='postgresql://xuxdfgdahjtehk:da29419a321993257ea41bb0ede4a835df8e8a3c10f80660a2eb2652bfee5080@ec2-34-248-228-53.eu-west-1.compute.amazonaws.com:5432/d7l7cc8ob1v060',
-            conn_max_age=600
-            )
+    "default": dj_database_url.config(
+        default='postgres://xuxdfgdahjtehk:da29419a321993257ea41bb0ede4a835df8e8a3c10f80660a2eb2652bfee5080@ec2-34-248-228-53.eu-west-1.compute.amazonaws.com:5432/d7l7cc8ob1v060',
+        conn_max_age=600
+         )
     }
+
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
