@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DOMAIN=os.environ.get('DOMAIN')
-DEBUG = 'RENDER' not in os.environ
+
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:  
@@ -89,7 +89,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-
 
 DATABASES = {
     'default': {
@@ -221,15 +220,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    ALLOWED_HOSTS=env.list('ALLOWED_HOSTS_DEPLOY')
+    #ALLOWED_HOSTS=env.list('ALLOWED_HOSTS_DEPLOY')
     #CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEPLOY')
     #CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 
     DATABASES = {
-    "default": dj_database_url.config(
-        default='postgres://xuxdfgdahjtehk:da29419a321993257ea41bb0ede4a835df8e8a3c10f80660a2eb2652bfee5080@ec2-34-248-228-53.eu-west-1.compute.amazonaws.com:5432/d7l7cc8ob1v060',
-        conn_max_age=600
-         )
+        "default": env.db("DATABASE_URL"),
+
     }
+    DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
